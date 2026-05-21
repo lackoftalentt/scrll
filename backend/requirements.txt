@@ -4,6 +4,8 @@ djangorestframework-simplejwt==5.3.0
 django-cors-headers==4.3.1
 dj-database-url==2.3.0
 
+Pillow
+
 gunicorn
 whitenoise
 psycopg2-binary
