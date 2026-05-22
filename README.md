@@ -1,407 +1,272 @@
-# SCRLL
+# Project Presentation — SCRLL
 
-SCRLL is a small social media application with a modern dark interface. It lets
-users register, sign in, publish posts with optional images, like posts, comment
-on discussions, edit/delete owned content, update their profile bio, and open
-public user profiles from clickable usernames.
+## 1. Project Title
 
-The repository is split into a Next.js frontend and a Django REST Framework
-backend.
+**SCRLL — Modern Social Media Platform**
 
-## Features
+---
 
-- JWT-based authentication.
-- Login and signup pages.
-- Infinite home feed with paginated posts.
-- Post creation, editing, deletion, image upload, likes, and comments.
-- Comment creation, editing, and deletion.
-- User profile page with email, bio, join date, and personal posts.
-- Public user profile pages at `/users/[username]`.
-- Clickable usernames in posts, comments, and comment dialogs.
-- Dark theme built with Tailwind CSS, shadcn-style UI primitives, and Phosphor
-  icons.
-- Client-side cache updates through TanStack Query for likes and comment
-  counters.
+## 2. Problem the Project Solves
 
-## Tech Stack
+Many beginner social media projects only support basic posting and lack real interactive functionality.
+
+SCRLL solves this by providing:
+
+* User authentication
+* Real-time social interactions
+* Public profiles
+* Likes and comments
+* Image uploads
+* Modern responsive UI
+
+The project demonstrates how a full-stack social platform works using a modern frontend and REST API backend architecture.
+
+---
+
+## 3. Technologies Used
 
 ### Frontend
 
-- Next.js `16.2.6` with the App Router.
-- React `19.2.4`.
-- TypeScript.
-- Tailwind CSS v4.
-- TanStack Query v5.
-- Zustand for auth state.
-- Radix UI primitives through local UI components.
-- Phosphor Icons.
+* Vercel Next.js 16
+* React 19
+* TypeScript
+* Tailwind CSS
+* TanStack Query
+* Zustand
+* Radix UI
+* Phosphor Icons
 
 ### Backend
 
-- Django `4.2.7`.
-- Django REST Framework `3.14.0`.
-- Simple JWT.
-- django-cors-headers.
-- SQLite for local development.
+* Django
+* Django REST Framework
+* Simple JWT
+* SQLite
+* django-cors-headers
 
-## Project Structure
+---
 
-```text
-frontend/
-  src/
-    app/                    Next.js App Router pages and layouts
-    components/ui/          Reusable UI primitives
-    entities/               Domain models, API functions, hooks, and base UI
-    features/               User actions such as auth, likes, comments, post CRUD
-    pages-fsd/              Page-level UI composition
-    shared/                 Shared API constants, providers, config, utilities
-    widgets/                Larger UI sections such as feed, sidebar, profile blocks
+## 4. Main Features
 
-backend/
-  users/                    Custom user model, auth, profile endpoints
-  posts/                    Post models, serializers, views, routes
-  comments/                 Comment models, serializers, views, routes
-  likes/                    Like models, serializers, toggle endpoint
-  scrll_project/            Django project settings and root URLs
-```
+### Authentication
 
-The frontend follows an FSD-inspired organization: `entities` hold domain-level
-building blocks, `features` implement specific interactions, and `widgets`
-compose larger screen sections.
-
-## Requirements
-
-- Node.js compatible with Next.js 16.
-- npm.
-- Python 3.12 or compatible Python 3 version.
-- pip.
-
-## Environment Variables
-
-Create `frontend/.env`:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:8000
-```
-
-The backend currently uses local Django settings in
-`backend/scrll_project/settings.py`. For production, move sensitive values such
-as `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, CORS settings, and database
-configuration into environment variables.
-
-## Installation
-
-From the frontend directory:
-
-```bash
-npm install
-```
-
-From the backend directory:
-
-```bash
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python manage.py migrate
-```
-
-On Windows, activate the virtual environment with:
-
-```bash
-venv\Scripts\activate
-```
-
-## Running Locally
-
-Start the backend:
-
-```bash
-cd backend
-source venv/bin/activate
-python manage.py runserver
-```
-
-Start the frontend:
-
-```bash
-cd frontend
-npm run dev
-```
-
-Open:
-
-```text
-http://localhost:3000
-```
-
-If port `3000` is busy, Next.js may choose another port. If Turbopack is
-unstable on your machine, run:
-
-```bash
-npm run dev -- --webpack
-```
-
-## Scripts
-
-Frontend scripts:
-
-```bash
-npm run dev      # Start Next.js development server
-npm run build    # Create a production build
-npm run start    # Start the production server after build
-```
-
-Backend commands:
-
-```bash
-python manage.py runserver
-python manage.py migrate
-python manage.py createsuperuser
-```
-
-## Frontend Routes
-
-| Route               | Description                     |
-| ------------------- | ------------------------------- |
-| `/login`            | Sign in page                    |
-| `/signup`           | Account registration page       |
-| `/`                 | Authenticated home feed         |
-| `/profile`          | Current user profile            |
-| `/users/[username]` | Public profile for another user |
-
-Authenticated pages are protected by client-side auth state. If there is no
-access token, profile-related UI shows an unavailable state.
-
-## Backend API
-
-Base URL in local development:
-
-```text
-http://localhost:8000
-```
-
-### Users
-
-| Method  | Endpoint                    | Description                          |
-| ------- | --------------------------- | ------------------------------------ |
-| `POST`  | `/api/users/register/`      | Register a user                      |
-| `POST`  | `/api/users/login/`         | Obtain JWT access and refresh tokens |
-| `POST`  | `/api/users/token/refresh/` | Refresh JWT token                    |
-| `GET`   | `/api/users/me/`            | Get current user profile             |
-| `PATCH` | `/api/users/me/`            | Update current user profile bio      |
-| `GET`   | `/api/users/<username>/`    | Get public user profile by username  |
+* User registration and login
+* JWT token authentication
+* Protected routes
 
 ### Posts
 
-| Method   | Endpoint           | Description          |
-| -------- | ------------------ | -------------------- |
-| `GET`    | `/api/posts/`      | Paginated post feed  |
-| `POST`   | `/api/posts/`      | Create a post        |
-| `GET`    | `/api/posts/me/`   | Current user's posts |
-| `GET`    | `/api/posts/<id>/` | Get one post         |
-| `PATCH`  | `/api/posts/<id>/` | Update an owned post |
-| `DELETE` | `/api/posts/<id>/` | Delete an owned post |
+* Create posts
+* Edit/delete own posts
+* Upload images
+* Infinite scrolling feed
 
-### Comments
+### Social Features
 
-| Method   | Endpoint                         | Description              |
-| -------- | -------------------------------- | ------------------------ |
-| `GET`    | `/api/comments/posts/<post_id>/` | List comments for a post |
-| `POST`   | `/api/comments/posts/<post_id>/` | Create a comment         |
-| `PATCH`  | `/api/comments/<id>/edit/`       | Edit an owned comment    |
-| `DELETE` | `/api/comments/<id>/`            | Delete an owned comment  |
+* Like/unlike posts
+* Add comments
+* Edit/delete comments
+* Clickable usernames
 
-### Likes
+### Profiles
 
-| Method | Endpoint                             | Description           |
-| ------ | ------------------------------------ | --------------------- |
-| `POST` | `/api/likes/posts/<post_id>/toggle/` | Toggle like on a post |
+* Personal profile page
+* Public user profiles
+* User bio editing
+* Join date display
 
-All protected endpoints expect:
+### UI/UX
 
-```http
-Authorization: Bearer <access_token>
-```
+* Modern dark theme
+* Responsive layout
+* Instant UI updates with TanStack Query cache
 
-## Data Models
+---
+
+## 5. Database Structure
 
 ### User
 
 ```ts
-type User = {
-	id: number
-	username: string
-	email: string
-	bio: string
-	created_at: string
+User {
+  id
+  username
+  email
+  bio
+  created_at
 }
 ```
 
 ### Post
 
 ```ts
-type Post = {
-	id: number
-	author: string
-	content: string
-	image: string | null
-	is_owner: boolean
-	likes_count: number
-	comments_count: number
-	is_liked: boolean
-	created_at: string
+Post {
+  id
+  author
+  content
+  image
+  likes_count
+  comments_count
+  created_at
 }
 ```
 
 ### Comment
 
 ```ts
-type Comment = {
-	id: number
-	post: number
-	author: string
-	content: string
-	created_at: string
+Comment {
+  id
+  post
+  author
+  content
+  created_at
 }
 ```
 
-## Authentication Flow
+### Like
 
-1. A user logs in through `/login`.
-2. The backend returns `access` and `refresh` JWT tokens.
-3. Tokens are stored in `localStorage`.
-4. Zustand keeps auth state in `useAuthStore`.
-5. API requests send the access token in the `Authorization` header.
-6. Logout clears local tokens and redirects to `/login`.
+```ts
+Like {
+  id
+  user
+  post
+}
+```
 
-Token storage is implemented in:
+Relations:
+
+* One user → many posts
+* One post → many comments
+* Many users ↔ many posts through likes
+
+---
+
+## 6. Project Architecture
+
+### Frontend Structure
 
 ```text
-src/shared/lib/token-storage.ts
+entities/   -> business models and API logic
+features/   -> user actions and interactions
+widgets/    -> large UI sections
+shared/     -> utilities and configs
 ```
 
-Auth state is implemented in:
+### Backend Apps
 
 ```text
-src/features/auth/model/auth-store.ts
+users/
+posts/
+comments/
+likes/
 ```
 
-## Query and Cache Behavior
+The project uses a modular architecture to keep code maintainable and scalable.
 
-TanStack Query is used for server state. Important query keys include:
+---
 
-- `['posts']` for the infinite home feed.
-- `['my-posts']` for the current user's posts.
-- `['user-posts', accessToken, username]` for public profile posts.
-- `['comments', postId]` for post comments.
-- `['current-user', accessToken]` for the current user profile.
-- `['user-profile', accessToken, username]` for public user profile details.
+## 7. API Structure
 
-Likes and comment counters are updated in cache so the interface responds
-immediately without waiting for a full refetch.
+### Main REST Endpoints
 
-## Styling
-
-Global design tokens live in:
+#### Users
 
 ```text
-src/app/globals.css
+/api/users/register/
+/api/users/login/
+/api/users/me/
 ```
 
-The application uses a permanent dark theme by applying the `dark` class at the
-root layout. UI primitives are located in `src/components/ui/` and are styled
-with Tailwind utility classes and CSS variables.
-
-## Media Uploads
-
-Posts can include an optional image. The frontend sends post create/update
-requests as `FormData`. The backend serves media files from:
+#### Posts
 
 ```text
-backend/media/
+/api/posts/
+/api/posts/<id>/
 ```
 
-During local development Django serves media through `MEDIA_URL = /media/`.
-
-## Known Limitations
-
-- Public profile posts are currently derived on the frontend by loading posts
-  and filtering by username. A dedicated backend endpoint such as
-  `/api/users/<username>/posts/` would be more efficient for large datasets.
-- Auth protection is client-side. Production applications should add server-side
-  route protection or middleware where appropriate.
-- SQLite is used for local development. Use PostgreSQL or another production
-  database for deployment.
-- Backend settings currently contain development values and should be
-  environment-driven before production deployment.
-
-## Development Notes
-
-- This project uses Next.js 16. Its APIs and conventions may differ from older
-  versions. Read the local Next.js docs in `node_modules/next/dist/docs/` before
-  changing framework-specific behavior.
-- Avoid committing local databases, media uploads, `.env` files, and virtual
-  environments.
-- Keep frontend API URLs centralized in `src/shared/api/constants.ts`.
-- Prefer updating TanStack Query cache for small UI counters instead of forcing
-  full refetches.
-
-## Troubleshooting
-
-### Frontend feels slow in development
-
-Next.js development mode can be CPU-heavy, especially on low-power processors.
-Try:
-
-```bash
-npm run dev -- --webpack
-```
-
-Also close unused browser tabs and background processes.
-
-### Google Fonts fail during build
-
-`next/font/google` needs network access during production builds. If the build
-runs in a restricted environment, allow network access or switch to locally
-hosted fonts.
-
-### API requests fail
-
-Check:
-
-- Backend is running at `http://localhost:8000`.
-- `NEXT_PUBLIC_API_URL` is set correctly.
-- The user is logged in and has a valid JWT access token.
-- CORS settings allow the frontend origin.
-
-## Deployment
-
-The project has been prepared for production deployment:
-
-- Django reads production settings from environment variables.
-- PostgreSQL is supported through `DATABASE_URL`.
-- Static files are ready for `collectstatic` and WhiteNoise.
-- Gunicorn is included for backend serving.
-- Example env files are provided for frontend and backend.
-- A backend `Procfile` is included.
-- Ignore files prevent env files, local databases, media uploads, build output,
-  and virtual environments from being committed.
-
-Read the full guide:
+#### Comments
 
 ```text
-frontend/DEPLOYMENT.md
+/ api/comments/posts/<post_id>/
 ```
 
-## Deployment Checklist
+#### Likes
 
-- Replace Django `SECRET_KEY`.
-- Set `DEBUG = False`.
-- Configure `ALLOWED_HOSTS`.
-- Restrict CORS origins.
-- Use a production database.
-- Configure static and media file hosting.
-- Set production frontend environment variables.
-- Run migrations.
-- Build the frontend with `npm run build`.
+```text
+/api/likes/posts/<post_id>/toggle/
+```
+
+---
+
+## 8. Authentication Flow
+
+1. User logs in
+2. Backend returns JWT access and refresh tokens
+3. Tokens stored in localStorage
+4. Zustand manages auth state
+5. API requests use Authorization header
+
+```http
+Authorization: Bearer <token>
+```
+
+---
+
+## 9. Live Demonstration
+
+### Demonstration Plan
+
+* Register new account
+* Login
+* Create a post
+* Upload image
+* Like a post
+* Add comment
+* Open public profile
+* Edit profile bio
+* Delete post/comment
+
+---
+
+## 10. Challenges Faced
+
+### Main Challenges
+
+* JWT authentication handling
+* Keeping frontend cache synchronized
+* Managing optimistic UI updates
+* Image upload with FormData
+* Organizing scalable frontend architecture
+* Handling infinite scrolling efficiently
+
+---
+
+## 11. Future Improvements
+
+### Planned Features
+
+* Real-time chat
+* Notifications
+* Follow system
+* Server-side route protection
+* PostgreSQL production database
+* Better image optimization
+* Dedicated endpoint for user posts
+* Deployment to cloud hosting
+
+---
+
+## 12. Conclusion
+
+SCRLL is a full-stack social media application built with modern technologies.
+
+The project demonstrates:
+
+* Full frontend/backend integration
+* REST API development
+* Authentication systems
+* State management
+* Database relationships
+* Modern UI development
+
+It also provides a strong foundation for scaling into a larger production-ready social platform.
